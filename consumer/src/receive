@@ -2,7 +2,6 @@
 <?php
 echo("Sleeping for 10 seconds. To ensure that rabbitmq already started\n");
 sleep(10);
-define('AMQP_DEBUG', true);
 require_once __DIR__ . '/vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 $connection = new AMQPStreamConnection('rabbitmq', 5672, 'guest', 'guest');
