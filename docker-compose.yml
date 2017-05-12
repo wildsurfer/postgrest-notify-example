@@ -1,0 +1,31 @@
+version: '2'
+services:
+  postgresql:
+    build: ./postgresql
+    ports:
+      - "5432"
+    depends_on:
+      - rabbitmq
+    environment:
+      - POSTGRES_PASSWORD=DGH5k39xchgh3Po
+      - POSTGRES_USER=postgres
+      - POSTGRES_DATABASE=test
+  postgrest:
+    build: ./postgrest
+    ports:
+      - "3000"
+    depends_on:
+      - postgresql
+  rabbitmq:
+    build: ./rabbitmq
+    hostname: rabbitmq
+    mem_limit: 256m
+    ports:
+      - "5672"
+      - "15672"
+  consumer:
+    build: ./consumer
+    depends_on:
+      - postgresql-to-amqp
+    restart: always
+
