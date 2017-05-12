@@ -28,4 +28,10 @@ services:
     depends_on:
       - rabbitmq
     restart: always
+  producer:
+    build: ./producer
+    depends_on:
+      - rabbitmq
+      - consumer
+    restart: always
 
