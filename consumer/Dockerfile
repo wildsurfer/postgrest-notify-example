@@ -9,7 +9,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 # Install php-amqplib dependencies
 RUN apk --no-cache add unzip zlib-dev
-RUN docker-php-ext-install bcmath zip sockets
+RUN docker-php-ext-install bcmath sockets
 
 COPY ./src /root/app
 RUN php composer.phar install --no-interaction
