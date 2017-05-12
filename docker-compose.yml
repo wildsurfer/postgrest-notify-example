@@ -26,6 +26,6 @@ services:
   consumer:
     build: ./consumer
     depends_on:
-      - postgresql-to-amqp
+      - rabbitmq
     restart: always
 
