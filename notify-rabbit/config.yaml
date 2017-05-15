@@ -4,7 +4,7 @@ databases:
     # Local test database
     test:
         enabled: true
-        host: localhost
+        host: postgresql
         port: 5432
         database: test
         user: postgres
