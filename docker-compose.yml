@@ -28,4 +28,8 @@ services:
     depends_on:
       - rabbitmq
     restart: always
-
+  notify-rabbit:
+    build: ./notify-rabbit
+    depends_on:
+      - rabbitmq
+      - postgresql  
