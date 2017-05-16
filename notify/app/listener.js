@@ -21,14 +21,6 @@ let ps = new PS(cn.getConnectionString());
 ps.addChannel('messanger', function(payload){
     amqp.connect(rabbitConnectionString, function(err, conn) {
         conn.createChannel(function(err, ch) {
-            // let router = payload.split('.');
-            // let routerArr = [];
-            // routerArr.push({emiter: router[0]});
-            // routerArr.push({receiver: router[1]});
-            // routerArr.push({entity: router[2]});
-            // routerArr.push({event: router[3]});
-            // routerArr.push({type: router[4]});
-            // routerArr.push({additional: (router[5]) ?  router[5] : null });
             ch.assertExchange('rabbit.notify', 'topic', {durable: false});
             ch.publish('rabbit.notify', "", new Buffer(JSON.stringify(payload)));
             console.log(" [x] Messanger: ", payload);
