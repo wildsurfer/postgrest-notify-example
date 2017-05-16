@@ -3,7 +3,7 @@ services:
   postgresql:
     build: ./postgresql
     ports:
-      - "5432"
+      - "5432:5432"
     depends_on:
       - rabbitmq
     environment:
@@ -22,10 +22,21 @@ services:
     mem_limit: 256m
     ports:
       - "5672"
-      - "15672"
+      - "15672:15672"
   consumer:
     build: ./consumer
     depends_on:
       - rabbitmq
     restart: always
-
+  notify:
+    build: ./notify
+    environment:
+      - POSTGRES_PASSWORD=DGH5k39xchgh3Po
+      - POSTGRES_USER=postgres
+      - POSTGRES_DATABASE=test
+      - POSTGRES_HOST=postgresql
+      - RABBIT_CONNECTION_STRING=amqp://guest:guest@rabbitmq
+    depends_on:
+      - postgresql
+      - rabbitmq
+    restart: always

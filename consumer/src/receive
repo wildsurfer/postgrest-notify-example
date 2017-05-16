@@ -8,37 +8,27 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 $connection = new AMQPStreamConnection('rabbitmq', 5672, 'guest', 'guest');
 $channel = $connection->channel();
 
-$arguments = [
-    'x-host'     => 'postgresql',
-    'x-port'     => 5432,
-    'x-dbname'   => 'test',
-    'x-user'     => 'postgres',
-    'x-password' => 'DGH5k39xchgh3Po',
-];
-
-$headers = new \PhpAmqpLib\Wire\AMQPTable($arguments);
-
 $channel->exchange_declare(
-    'x-pgsql-listen',
+    'rabbit.notify',
     'topic',
     false,
     false,
     false,
     false,
-    false,
-    $headers
+    false
 );
 
-$channel->queue_declare('mychannel', false, false, false, false);
+$channel->queue_declare('rabbit-notify', false, false, false, false);
 
-$channel->queue_bind("mychannel", "x-pgsql-listen", "", false);
+$channel->queue_bind("rabbit-notify", "rabbit.notify", "", false);
+
 
 echo ' [*] Waiting for messages. To exit press CTRL+C', "\n";
 
 $callback = function ($msg) {
     echo " [x] Received ", $msg->body, "\n";
 };
-$channel->basic_consume('mychannel', '', false, true, false, false, $callback);
+$channel->basic_consume('rabbit-notify', '', false, true, false, false, $callback);
 
 while (count($channel->callbacks)) {
     $channel->wait();
