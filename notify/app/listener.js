@@ -18,12 +18,12 @@ let cn = {
 
 let ps = new PS(cn.getConnectionString());
 
-ps.addChannel('messanger', function(payload){
+ps.addChannel('messenger', function(payload){
     amqp.connect(rabbitConnectionString, function(err, conn) {
         conn.createChannel(function(err, ch) {
             ch.assertExchange('rabbit.notify', 'topic', {durable: false});
             ch.publish('rabbit.notify', "", new Buffer(JSON.stringify(payload)));
-            console.log(" [x] Messanger: ", payload);
+            console.log(" [x] Messenger: ", payload);
         });
     });
 });
