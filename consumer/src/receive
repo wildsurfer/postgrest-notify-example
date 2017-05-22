@@ -4,15 +4,33 @@ echo("Sleeping for 10 seconds. To ensure that rabbitmq already started\n");
 sleep(10);
 require_once __DIR__ . '/vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+
 $connection = new AMQPStreamConnection('rabbitmq', 5672, 'guest', 'guest');
 $channel = $connection->channel();
-$channel->queue_declare('mychannel', false, false, false, false);
+
+$channel->exchange_declare(
+    'rabbit.notify',
+    'topic',
+    false,
+    false,
+    false,
+    false,
+    false
+);
+
+$channel->queue_declare('rabbit-notify', false, false, false, false);
+
+$channel->queue_bind("rabbit-notify", "rabbit.notify", "", false);
+
+
 echo ' [*] Waiting for messages. To exit press CTRL+C', "\n";
-$callback = function($msg) {
+
+$callback = function ($msg) {
     echo " [x] Received ", $msg->body, "\n";
 };
-$channel->basic_consume('mychannel', '', false, true, false, false, $callback);
-while(count($channel->callbacks)) {
+$channel->basic_consume('rabbit-notify', '', false, true, false, false, $callback);
+
+while (count($channel->callbacks)) {
     $channel->wait();
 }
 $channel->close();
