@@ -1,12 +1,6 @@
 Readme coming soon...
 ---------------------
 
-For correct work you need to run npm install in `notify/app`
-```
-cd notify/app
-npm install
-```
-
 RabbitMq Exchange: `rabbit.notify` <br>
 RabbitMq Type: `topic`
 
