@@ -3,7 +3,7 @@ services:
   postgresql:
     build: ./postgresql
     ports:
-      - "5432:5432"
+      - "5432"
     depends_on:
       - rabbitmq
     environment:
@@ -22,12 +22,11 @@ services:
     mem_limit: 256m
     ports:
       - "5672"
-      - "15672:15672"
+      - "15672"
   consumer:
     build: ./consumer
     depends_on:
       - rabbitmq
-    restart: always
   notify:
     build: ./notify
     environment:
@@ -39,4 +38,3 @@ services:
     depends_on:
       - postgresql
       - rabbitmq
-    restart: always

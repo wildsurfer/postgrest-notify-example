@@ -1,10 +1,16 @@
 FROM node:6.9.2-alpine
-COPY ./app/config.json /root/
+
 COPY ./app/ /var/www/html/web/
+
+RUN npm install && \
+    apk update && apk upgrade && \
+    apk add git bash && \
+    git clone https://github.com/vishnubob/wait-for-it.git /root/wfi
+
+
 COPY ./src/wait /root/
-RUN chmod +x /root/start.sh
-RUN chmod +x /root/run.sh
 RUN apk add --update supervisor
-CMD mkdir /etc/supervisor.d
+RUN mkdir /etc/supervisor.d
 COPY ./src/supervisor/conf/listener.ini /etc/supervisor.d/notifications.ini
+
 CMD /bin/sh /root/start.sh
