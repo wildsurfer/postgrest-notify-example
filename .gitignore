@@ -1,0 +1,4 @@
+.idea
+consumer/src/vendor/*
+notify/app/node_modules/*
+notify/npm-debug.log

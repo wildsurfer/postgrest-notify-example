@@ -27,5 +27,14 @@ services:
     build: ./consumer
     depends_on:
       - rabbitmq
-    restart: always
-
+  notify:
+    build: ./notify
+    environment:
+      - POSTGRES_PASSWORD=DGH5k39xchgh3Po
+      - POSTGRES_USER=postgres
+      - POSTGRES_DATABASE=test
+      - POSTGRES_HOST=postgresql
+      - RABBIT_CONNECTION_STRING=amqp://guest:guest@rabbitmq
+    depends_on:
+      - postgresql
+      - rabbitmq
